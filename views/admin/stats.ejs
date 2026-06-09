@@ -1,0 +1,30 @@
+<%- include('../partials/header', { admin: true }) %>
+<div class="admin-head"><div><span class="eyebrow">Administration</span><h1>Statistiques</h1></div></div>
+<section class="admin-grid">
+  <article class="admin-panel"><h2>Inscriptions par mois</h2><canvas id="barChart"></canvas></article>
+  <article class="admin-panel"><h2>Utilisateurs par rôle</h2><canvas id="pieChart"></canvas></article>
+  <article class="admin-panel admin-panel--wide"><h2>Top formations</h2><table><thead><tr><th>Formation</th><th>Inscriptions</th></tr></thead><tbody><% topFormations.forEach((f) => { %><tr><td><%= f.titre %></td><td><%= f.total %></td></tr><% }) %></tbody></table></article>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+  const barData = <%- barData %>;
+  const pieData = <%- pieData %>;
+  const cssVars = getComputedStyle(document.documentElement);
+  const chartGold = cssVars.getPropertyValue('--gold').trim();
+  const chartGoldLight = cssVars.getPropertyValue('--gold-light').trim();
+  const chartWhite = cssVars.getPropertyValue('--white').trim();
+  const chartSlate = cssVars.getPropertyValue('--slate').trim();
+  const chartGreen = cssVars.getPropertyValue('--green').trim();
+  const chartTeal = cssVars.getPropertyValue('--teal').trim();
+  new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: { labels: barData.labels, datasets: [{ label: 'Inscriptions', data: barData.values, backgroundColor: chartGold }] },
+    options: { plugins: { legend: { labels: { color: chartWhite } } }, scales: { x: { ticks: { color: chartSlate } }, y: { ticks: { color: chartSlate } } } }
+  });
+  new Chart(document.getElementById('pieChart'), {
+    type: 'pie',
+    data: { labels: pieData.labels, datasets: [{ data: pieData.values, backgroundColor: [chartGold, chartTeal, chartGreen, chartGoldLight] }] },
+    options: { plugins: { legend: { labels: { color: chartWhite } } } }
+  });
+</script>
+<%- include('../partials/footer', { admin: true }) %>

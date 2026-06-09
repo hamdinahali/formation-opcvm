@@ -1,0 +1,29 @@
+<%- include('../partials/header', { admin: true }) %>
+<div class="admin-head"><div><span class="eyebrow">Administration</span><h1>Dashboard</h1></div><a class="btn" href="/">Voir le site</a></div>
+<section class="admin-stats">
+  <div><strong><%= stats.users %></strong><span>Utilisateurs</span></div>
+  <div><strong><%= stats.formations %></strong><span>Formations</span></div>
+  <div><strong><%= stats.inscriptions %></strong><span>Inscriptions</span></div>
+  <div><strong><%= stats.contacts %></strong><span>Contacts non lus</span></div>
+  <div><strong><%= stats.revenus %></strong><span>TND payés</span></div>
+  <div><strong><%= stats.temoignages %></strong><span>Témoignages à valider</span></div>
+</section>
+<section class="admin-grid">
+  <article class="admin-panel"><h2>Inscriptions par mois</h2><canvas id="monthlyChart"></canvas></article>
+  <article class="admin-panel"><h2>Utilisateurs récents</h2><table><thead><tr><th>Nom</th><th>Email</th><th>Rôle</th></tr></thead><tbody><% recentUsers.forEach((u) => { %><tr><td><%= u.prenom %> <%= u.nom %></td><td><%= u.email %></td><td><%= u.role %></td></tr><% }) %></tbody></table></article>
+  <article class="admin-panel admin-panel--wide"><h2>Inscriptions récentes</h2><table><thead><tr><th>Utilisateur</th><th>Formation</th><th>Statut</th><th>Paiement</th></tr></thead><tbody><% recentInscriptions.forEach((i) => { %><tr><td><%= i.prenom %> <%= i.nom %></td><td><%= i.titre %></td><td><%= i.statut %></td><td><%= i.paiement %></td></tr><% }) %></tbody></table></article>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+  const dashboardData = <%- chartData %>;
+  const cssVars = getComputedStyle(document.documentElement);
+  const chartGold = cssVars.getPropertyValue('--gold').trim();
+  const chartWhite = cssVars.getPropertyValue('--white').trim();
+  const chartSlate = cssVars.getPropertyValue('--slate').trim();
+  new Chart(document.getElementById('monthlyChart'), {
+    type: 'bar',
+    data: { labels: dashboardData.labels, datasets: [{ label: 'Inscriptions', data: dashboardData.values, backgroundColor: chartGold }] },
+    options: { plugins: { legend: { labels: { color: chartWhite } } }, scales: { x: { ticks: { color: chartSlate } }, y: { ticks: { color: chartSlate } } } }
+  });
+</script>
+<%- include('../partials/footer', { admin: true }) %>

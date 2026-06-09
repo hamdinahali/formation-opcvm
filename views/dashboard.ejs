@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+<section class="page-hero compact">
+  <div class="container">
+    <span class="eyebrow">Dashboard</span>
+    <h1>Bonjour <%= user.prenom %>.</h1>
+    <p>Suivez vos inscriptions, paiements et progressions.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="card-grid card-grid--2">
+      <% if (!inscriptions.length) { %>
+        <article class="course-card"><h3>Aucune inscription</h3><p>Explorez le catalogue et inscrivez-vous à une formation.</p><a class="btn" href="/formations">Voir les formations</a></article>
+      <% } %>
+      <% inscriptions.forEach((i) => { %>
+        <article class="course-card">
+          <span class="tag"><%= i.statut %> · <%= i.paiement %></span>
+          <h3><a href="/formations/<%= i.formation_id %>"><%= i.titre %></a></h3>
+          <p><%= i.duree %> · <%= i.type %></p>
+          <div class="progress"><span style="width:<%= i.progression %>%"></span></div>
+          <div class="course-card__meta"><span>Progression</span><strong><%= i.progression %>%</strong></div>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<%- include('partials/footer') %>

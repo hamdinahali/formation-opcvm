@@ -1,0 +1,22 @@
+<%- include('../partials/header', { admin: true }) %>
+<div class="admin-head"><div><span class="eyebrow">Administration</span><h1>Utilisateurs</h1></div><a class="btn" href="#create-user">Créer</a></div>
+<form class="admin-filters" method="get">
+  <input name="q" placeholder="Nom ou email" value="<%= filters.q %>">
+  <select name="role"><option value="">Tous rôles</option><% ['etudiant','investisseur','formateur','admin'].forEach((r) => { %><option value="<%= r %>" <%= filters.role === r ? 'selected' : '' %>><%= r %></option><% }) %></select>
+  <button class="btn" type="submit">Filtrer</button>
+</form>
+<section class="admin-panel">
+  <table><thead><tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Actif</th><th>Actions</th></tr></thead><tbody>
+    <% users.forEach((u) => { %>
+      <tr><td><%= u.prenom %> <%= u.nom %></td><td><%= u.email %></td><td><%= u.role %></td><td><%= u.actif ? 'Oui' : 'Non' %></td><td class="actions">
+        <form action="/admin/users/<%= u.id %>/toggle?_method=PUT" method="post"><button>Toggle</button></form>
+        <form action="/admin/users/<%= u.id %>?_method=DELETE" method="post"><button class="danger">Delete</button></form>
+      </td></tr>
+    <% }) %>
+  </tbody></table>
+  <div class="pagination"><% for (let p = 1; p <= pages; p++) { %><a class="<%= p === page ? 'active' : '' %>" href="?page=<%= p %>&q=<%= filters.q %>&role=<%= filters.role %>"><%= p %></a><% } %></div>
+</section>
+<div class="modal" id="create-user"><a class="modal__backdrop" href="#"></a><form class="modal__card" action="/admin/users" method="post">
+  <h2>Créer un utilisateur</h2><label>Nom<input name="nom" required></label><label>Prénom<input name="prenom" required></label><label>Email<input type="email" name="email" required></label><label>Mot de passe<input name="password" required></label><label>Rôle<select name="role"><option>etudiant</option><option>investisseur</option><option>formateur</option><option>admin</option></select></label><button class="btn" type="submit">Créer</button><a class="btn btn--ghost" href="#">Fermer</a>
+</form></div>
+<%- include('../partials/footer', { admin: true }) %>

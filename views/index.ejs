@@ -1,0 +1,89 @@
+<%- include('partials/header') %>
+<section class="hero">
+  <div class="container hero__grid">
+    <div>
+      <span class="eyebrow">Apprenez à investir intelligemment</span>
+      <h1>Maîtrisez les OPCVM tunisiens avec une approche <em>patrimoniale</em>.</h1>
+      <p>Des formations en ligne et présentielles pour comprendre les SICAV, FCP, risques, frais et allocations adaptées au marché tunisien.</p>
+      <div class="hero__actions">
+        <a class="btn" href="/formations">Voir les formations</a>
+        <a class="btn btn--ghost" href="/auth/register">Créer mon compte</a>
+      </div>
+    </div>
+    <div class="hero__visual" aria-hidden="true">
+      <svg class="candles" viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg">
+        <path d="M42 338 C146 302 190 246 250 266 S350 196 430 212 S548 118 638 96" fill="none" class="chart-line"/>
+        <% [90,160,230,300,370,440,510,580].forEach((x, i) => { %>
+          <g class="candle" style="animation-delay:<%= i * 120 %>ms">
+            <line x1="<%= x %>" y1="<%= 90 + (i % 3) * 24 %>" x2="<%= x %>" y2="<%= 310 - (i % 2) * 32 %>"/>
+            <rect x="<%= x - 17 %>" y="<%= 142 + (i % 4) * 18 %>" width="34" height="<%= 58 + (i % 3) * 12 %>" rx="4"/>
+          </g>
+        <% }) %>
+      </svg>
+      <div class="float-card float-card--one"><strong><%= stats.users %>+</strong><span>apprenants</span></div>
+      <div class="float-card float-card--two"><strong><%= stats.formations %></strong><span>formations actives</span></div>
+      <div class="float-card float-card--three"><strong><%= stats.satisfaction %></strong><span>satisfaction</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="formations">
+  <div class="container">
+    <span class="eyebrow">Catalogue</span>
+    <h2>Formations OPCVM pour investisseurs et étudiants.</h2>
+    <div class="card-grid card-grid--3">
+      <% formations.forEach((formation) => { %>
+        <article class="course-card">
+          <span class="tag"><%= formation.categorie %> · <%= formation.type %></span>
+          <h3><a href="/formations/<%= formation.id %>"><%= formation.titre %></a></h3>
+          <p><%= formation.description %></p>
+          <div class="course-card__meta"><span><%= formation.duree %></span><strong><%= formation.prix === 0 ? 'Gratuit' : `${formation.prix} TND` %></strong></div>
+          <a class="link" href="/formations/<%= formation.id %>">Découvrir</a>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container stats-row">
+    <div><strong><%= stats.inscriptions %></strong><span>inscriptions</span></div>
+    <div><strong>20MB</strong><span>supports PDF</span></div>
+    <div><strong>100%</strong><span>SQLite local</span></div>
+    <div><strong>Tunis</strong><span>ancrage marché</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">Témoignages</span>
+    <h2>Des retours terrain, pas des promesses floues.</h2>
+    <div class="card-grid card-grid--3">
+      <% temoignages.forEach((t) => { %>
+        <article class="testimonial">
+          <div class="stars"><%= '★'.repeat(t.note) %></div>
+          <p>“<%= t.message %>”</p>
+          <strong><%= t.nom %></strong><span><%= t.role %></span>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" id="contact">
+  <div class="container split">
+    <div>
+      <span class="eyebrow">Contact</span>
+      <h2>Parlez-nous de votre objectif de formation.</h2>
+      <p>Notre équipe vous oriente vers le bon parcours selon votre niveau, votre budget et votre horizon.</p>
+    </div>
+    <form class="panel-form" action="/contact" method="post">
+      <label>Nom complet<input name="nom" required></label>
+      <label>Email<input type="email" name="email" required></label>
+      <label>Sujet<input name="sujet" required></label>
+      <label>Message<textarea name="message" rows="5" required></textarea></label>
+      <button class="btn" type="submit">Envoyer</button>
+    </form>
+  </div>
+</section>
+<%- include('partials/footer') %>

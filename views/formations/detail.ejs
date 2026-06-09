@@ -1,0 +1,57 @@
+<%- include('../partials/header') %>
+<section class="page-hero">
+  <div class="container split">
+    <div>
+      <p class="breadcrumb"><a href="/">Accueil</a> / <a href="/formations">Formations</a> / <%= formation.titre %></p>
+      <span class="eyebrow"><%= formation.categorie %> · <%= formation.type %></span>
+      <h1><%= formation.titre %></h1>
+      <p><%= formation.description %></p>
+      <div class="meta-row">
+        <span><strong><%= formation.duree %></strong> durée</span>
+        <span><strong><%= formation.niveau %></strong> niveau</span>
+        <span><strong><%= formation.places_dispo %>/<%= formation.places_max %></strong> places</span>
+      </div>
+    </div>
+    <aside class="price-panel">
+      <span>Tarif</span>
+      <strong><%= formation.prix === 0 ? 'Gratuit' : `${formation.prix} TND` %></strong>
+      <% if (enrolled) { %>
+        <p>Vous êtes inscrit à cette formation.</p>
+        <a class="btn" href="/dashboard">Voir mon dashboard</a>
+      <% } else { %>
+        <form action="/formations/<%= formation.id %>/enroll" method="post"><button class="btn" type="submit">S’inscrire</button></form>
+      <% } %>
+    </aside>
+  </div>
+</section>
+<section class="section">
+  <div class="container detail-grid">
+    <div>
+      <h2>Modules</h2>
+      <div class="timeline">
+        <% modules.forEach((m) => { %><div><strong><%= m.ordre %>. <%= m.titre %></strong><span><%= m.duree || '' %></span></div><% }) %>
+      </div>
+      <h2>Ressources</h2>
+      <div class="resource-list">
+        <% ressources.forEach((r) => { %>
+          <a class="resource" href="<%= r.type === 'pdf' ? `/uploads/pdfs/${r.fichier}` : r.url %>" target="_blank">
+            <strong><%= r.titre %></strong><span><%= r.type === 'pdf' ? `${r.taille_ko} ko` : 'YouTube' %></span>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+    <aside>
+      <h2>Sessions</h2>
+      <% if (sessions.length) { %>
+        <% sessions.forEach((s) => { %>
+          <div class="session-card"><strong><%= s.date_debut %> → <%= s.date_fin %></strong><p><%= s.lieu %></p><span class="tag"><%= s.statut %></span></div>
+        <% }) %>
+      <% } else { %>
+        <p>Aucune session planifiée.</p>
+      <% } %>
+      <h2>Témoignages</h2>
+      <% temoignages.forEach((t) => { %><div class="testimonial small"><div class="stars"><%= '★'.repeat(t.note) %></div><p>“<%= t.message %>”</p><strong><%= t.nom %></strong></div><% }) %>
+    </aside>
+  </div>
+</section>
+<%- include('../partials/footer') %>

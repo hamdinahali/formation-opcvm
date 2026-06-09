@@ -1,0 +1,12 @@
+<%- include('../partials/header', { admin: true }) %>
+<div class="admin-head"><div><span class="eyebrow">Administration</span><h1>Contacts</h1></div></div>
+<section class="admin-panel"><div class="message-list">
+  <% contacts.forEach((c) => { %>
+    <article class="message <%= c.lu ? '' : 'unread' %>">
+      <div><strong><%= c.nom %></strong><span><%= c.email %> · <%= c.created_at %></span></div>
+      <h3><%= c.sujet %></h3><p><%= c.message %></p>
+      <form action="/admin/contacts/<%= c.id %>?_method=DELETE" method="post"><button class="danger">Supprimer</button></form>
+    </article>
+  <% }) %>
+</div></section>
+<%- include('../partials/footer', { admin: true }) %>

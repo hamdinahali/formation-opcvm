@@ -1,0 +1,29 @@
+<%- include('../partials/header') %>
+<section class="page-hero">
+  <div class="container split">
+    <div>
+      <span class="eyebrow">Parcours Investisseurs</span>
+      <h1>Investir en OPCVM avec discipline.</h1>
+      <p>Formations conçues pour comparer des fonds, comprendre le risque et construire une allocation cohérente dans le contexte tunisien.</p>
+      <a class="btn" href="/formations?categorie=investisseur">Voir le catalogue investisseur</a>
+    </div>
+    <div class="stats-row vertical"><div><strong><%= formations.length %></strong><span>formations</span></div><div><strong>PDF</strong><span>supports</span></div><div><strong>Tunis</strong><span>présentiel</span></div></div>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">Sélection</span>
+    <h2>Formations disponibles</h2>
+    <div class="card-grid card-grid--3">
+      <% formations.forEach((formation) => { %>
+        <article class="course-card">
+          <span class="tag"><%= formation.type %> · <%= formation.niveau %></span>
+          <h3><a href="/formations/<%= formation.id %>"><%= formation.titre %></a></h3>
+          <p><%= formation.description %></p>
+          <div class="course-card__meta"><span><%= formation.duree %></span><strong><%= formation.prix %> TND</strong></div>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<%- include('../partials/footer') %>

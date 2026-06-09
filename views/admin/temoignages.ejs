@@ -1,0 +1,8 @@
+<%- include('../partials/header', { admin: true }) %>
+<div class="admin-head"><div><span class="eyebrow">Administration</span><h1>Témoignages</h1></div></div>
+<section class="admin-panel"><table><thead><tr><th>Nom</th><th>Formation</th><th>Message</th><th>Note</th><th>Validé</th><th>Actions</th></tr></thead><tbody>
+  <% temoignages.forEach((t) => { %>
+    <tr><td><%= t.nom %><br><small><%= t.role %></small></td><td><%= t.formation || '-' %></td><td><%= t.message %></td><td><%= t.note %>/5</td><td><%= t.valide ? 'Oui' : 'Non' %></td><td class="actions"><form action="/admin/temoignages/<%= t.id %>/toggle?_method=PUT" method="post"><button>Valider</button></form><form action="/admin/temoignages/<%= t.id %>?_method=DELETE" method="post"><button class="danger">Supprimer</button></form></td></tr>
+  <% }) %>
+</tbody></table></section>
+<%- include('../partials/footer', { admin: true }) %>

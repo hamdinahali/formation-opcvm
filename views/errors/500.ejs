@@ -1,0 +1,10 @@
+<%- include('../partials/header') %>
+<section class="page-hero compact">
+  <div class="container">
+    <span class="eyebrow">Erreur</span>
+    <h1>Une erreur est survenue</h1>
+    <p><%= error && error.message ? error.message : 'Veuillez réessayer dans quelques instants.' %></p>
+    <a class="btn" href="/">Retour à l’accueil</a>
+  </div>
+</section>
+<%- include('../partials/footer') %>
