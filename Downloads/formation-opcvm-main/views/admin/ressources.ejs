@@ -1,0 +1,8 @@
+<%- include('../partials/header', { admin: true }) %>
+<div class="admin-head"><div><span class="eyebrow">Administration</span><h1>Ressources</h1></div></div>
+<section class="admin-grid">
+  <form class="admin-panel admin-form" action="/admin/ressources/video" method="post"><h2>YouTube</h2><label>Formation<select name="formation_id"><% formations.forEach((f) => { %><option value="<%= f.id %>"><%= f.titre %></option><% }) %></select></label><label>Titre<input name="titre" required></label><label>URL<input name="url" type="url" required></label><button class="btn" type="submit">Ajouter la vidéo</button></form>
+  <form class="admin-panel admin-form" action="/admin/ressources/pdf" method="post" enctype="multipart/form-data"><h2>PDF</h2><label>Formation<select name="formation_id"><% formations.forEach((f) => { %><option value="<%= f.id %>"><%= f.titre %></option><% }) %></select></label><label>Titre<input name="titre" required></label><label>Fichier PDF<input name="pdf" type="file" accept="application/pdf" required></label><button class="btn" type="submit">Uploader le PDF</button></form>
+</section>
+<section class="admin-panel"><h2>Ressources existantes</h2><table><thead><tr><th>Titre</th><th>Formation</th><th>Type</th><th>Taille</th><th></th></tr></thead><tbody><% ressources.forEach((r) => { %><tr><td><%= r.titre %></td><td><%= r.formation %></td><td><%= r.type %></td><td><%= r.taille_ko || '-' %> ko</td><td><form action="/admin/ressources/<%= r.id %>?_method=DELETE" method="post"><button class="danger">Supprimer</button></form></td></tr><% }) %></tbody></table></section>
+<%- include('../partials/footer', { admin: true }) %>

@@ -1,0 +1,22 @@
+<%- include('../partials/header', { admin: true }) %>
+<div class="admin-head"><div><span class="eyebrow">Administration</span><h1>Formations</h1></div></div>
+<section class="admin-panel"><h2>Créer une formation</h2>
+  <form class="admin-form grid" action="/admin/formations" method="post">
+    <input name="titre" placeholder="Titre" required><input name="niveau" placeholder="Niveau" required><input name="duree" placeholder="Durée" required><input name="prix" type="number" step="0.01" placeholder="Prix">
+    <select name="categorie"><option value="investisseur">Investisseur</option><option value="etudiant">Étudiant</option></select><select name="type"><option value="enligne">En ligne</option><option value="presentiel">Présentiel</option></select><input name="places_max" type="number" placeholder="Places max"><input name="places_dispo" type="number" placeholder="Places dispo">
+    <textarea name="description" placeholder="Description" required></textarea><button class="btn" type="submit">Ajouter</button>
+  </form>
+</section>
+<section class="admin-panel"><h2>Liste</h2><div class="formation-admin-list">
+  <% formations.forEach((f) => { %>
+    <details class="admin-item"><summary><strong><%= f.titre %></strong><span><%= f.inscrits %> inscrits · <%= f.actif ? 'actif' : 'inactif' %></span></summary>
+      <form class="admin-form grid" action="/admin/formations/<%= f.id %>?_method=PUT" method="post">
+        <input name="titre" value="<%= f.titre %>" required><input name="niveau" value="<%= f.niveau %>" required><input name="duree" value="<%= f.duree %>" required><input name="prix" type="number" step="0.01" value="<%= f.prix %>">
+        <select name="categorie"><option value="investisseur" <%= f.categorie === 'investisseur' ? 'selected' : '' %>>Investisseur</option><option value="etudiant" <%= f.categorie === 'etudiant' ? 'selected' : '' %>>Étudiant</option></select><select name="type"><option value="enligne" <%= f.type === 'enligne' ? 'selected' : '' %>>En ligne</option><option value="presentiel" <%= f.type === 'presentiel' ? 'selected' : '' %>>Présentiel</option></select><input name="places_max" type="number" value="<%= f.places_max %>"><input name="places_dispo" type="number" value="<%= f.places_dispo %>">
+        <textarea name="description"><%= f.description %></textarea><button class="btn" type="submit">Sauver</button>
+      </form>
+      <div class="actions"><form action="/admin/formations/<%= f.id %>/toggle?_method=PUT" method="post"><button>Toggle actif</button></form><form action="/admin/formations/<%= f.id %>?_method=DELETE" method="post"><button class="danger">Supprimer</button></form></div>
+    </details>
+  <% }) %>
+</div></section>
+<%- include('../partials/footer', { admin: true }) %>

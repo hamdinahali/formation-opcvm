@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+<section class="page-hero teal">
+  <div class="container split">
+    <div>
+      <span class="eyebrow">Parcours Étudiants</span>
+      <h1>Comprendre les marchés sans jargon.</h1>
+      <p>Un parcours débutant avec simulateur, badges universitaires et premières notions sur les OPCVM et la Bourse de Tunis.</p>
+      <a class="btn btn--teal" href="/formations?categorie=etudiant">Voir le catalogue étudiant</a>
+    </div>
+    <div class="roadmap">
+      <div><span>1</span>Découvrir</div><div><span>2</span>Lire</div><div><span>3</span>Simuler</div><div><span>4</span>Présenter</div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">Programmes</span>
+    <h2>Formations étudiantes</h2>
+    <div class="card-grid card-grid--3">
+      <% formations.forEach((formation) => { %>
+        <article class="course-card">
+          <span class="tag tag--teal"><%= formation.type %> · <%= formation.niveau %></span>
+          <h3><a href="/formations/<%= formation.id %>"><%= formation.titre %></a></h3>
+          <p><%= formation.description %></p>
+          <div class="course-card__meta"><span><%= formation.duree %></span><strong><%= formation.prix === 0 ? 'Gratuit' : `${formation.prix} TND` %></strong></div>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<%- include('../partials/footer') %>

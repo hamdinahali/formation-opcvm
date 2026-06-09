@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title ? `${title} | Formation OPCVM` : 'Formation OPCVM' %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <% const isAdmin = typeof admin !== 'undefined' && admin; %>
+  <% if (isAdmin) { %><link rel="stylesheet" href="/css/admin.css"><% } %>
+</head>
+<body class="<%= isAdmin ? 'admin-body' : '' %>">
+  <% if (isAdmin) { %>
+    <aside class="admin-sidebar">
+      <a class="admin-sidebar__brand" href="/admin">Formation <span>OPCVM</span></a>
+      <nav class="admin-sidebar__nav" aria-label="Administration">
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/users">Utilisateurs</a>
+        <a href="/admin/formations">Formations</a>
+        <a href="/admin/ressources">Ressources</a>
+        <a href="/admin/inscriptions">Inscriptions</a>
+        <a href="/admin/stats">Statistiques</a>
+        <a href="/admin/contacts">Contacts</a>
+        <a href="/admin/temoignages">Témoignages</a>
+        <a href="/societes-bourse.html">Sociétés Tunisie</a>
+        <a href="/societes-etrangeres.html">Sociétés Étrangères</a>
+        <a href="/commentaires.html">Commentaires</a>
+        <a href="/membres.html">Membres</a>
+        <a href="/performances.html">Performances</a>
+      </nav>
+      <form action="/auth/logout" method="post"><button class="admin-sidebar__logout" type="submit">Déconnexion</button></form>
+    </aside>
+    <main class="admin-main">
+  <% } else { %>
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="site-header__brand" href="/">Formation <span>OPCVM</span></a>
+        <nav class="site-header__nav" aria-label="Navigation principale">
+          <a href="/">Accueil</a>
+          <a href="/formations">Formations</a>
+          <a href="/formation-investisseurs">Investisseurs</a>
+          <a href="/formation-etudiants">Étudiants</a>
+          <a href="/societes-bourse.html">Sociétés TN</a>
+          <a href="/intermediaires.html">Intermédiaires</a>
+          <a href="/performances.html">Performances</a>
+          <a href="/societes-etrangeres.html">International</a>
+          <a href="/commentaires.html">Commentaires</a>
+          <a href="/membres.html">Membres</a>
+          <% if (currentUser && currentUser.role === 'admin') { %><a href="/admin">Admin</a><% } %>
+        </nav>
+        <div class="site-header__actions">
+          <% if (currentUser) { %>
+            <a class="btn btn--ghost" href="/dashboard">Dashboard</a>
+            <form action="/auth/logout" method="post"><button class="btn btn--small" type="submit">Sortir</button></form>
+          <% } else { %>
+            <a class="btn btn--ghost" href="/auth/login">Connexion</a>
+            <a class="btn" href="/auth/register">Inscription</a>
+          <% } %>
+        </div>
+        <span class="site-header__menu">Menu</span>
+      </div>
+    </header>
+    <main>
+  <% } %>
+  <% if (success) { %><div class="flash flash--success"><%= success %></div><% } %>
+  <% if (error) { %><div class="flash flash--error"><%= error %></div><% } %>

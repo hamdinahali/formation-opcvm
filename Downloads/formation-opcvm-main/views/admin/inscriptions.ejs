@@ -1,0 +1,18 @@
+<%- include('../partials/header', { admin: true }) %>
+<div class="admin-head"><div><span class="eyebrow">Administration</span><h1>Inscriptions</h1></div></div>
+<form class="admin-filters" method="get">
+  <select name="statut"><option value="">Tous statuts</option><% ['en_attente','confirme','annule','termine'].forEach((s) => { %><option value="<%= s %>" <%= statut === s ? 'selected' : '' %>><%= s %></option><% }) %></select>
+  <button class="btn" type="submit">Filtrer</button>
+</form>
+<section class="admin-panel"><table><thead><tr><th>Utilisateur</th><th>Formation</th><th>Statut</th><th>Paiement</th><th>Montant</th><th>Action</th></tr></thead><tbody>
+  <% inscriptions.forEach((i) => { %>
+    <tr><td><%= i.prenom %> <%= i.nom %><br><small><%= i.email %></small></td><td><%= i.titre %></td><td><%= i.statut %></td><td><%= i.paiement %></td><td><%= i.montant_paye %> TND</td><td>
+      <form class="inline-form" action="/admin/inscriptions/<%= i.id %>?_method=PUT" method="post">
+        <select name="statut"><% ['en_attente','confirme','annule','termine'].forEach((s) => { %><option value="<%= s %>" <%= i.statut === s ? 'selected' : '' %>><%= s %></option><% }) %></select>
+        <select name="paiement"><% ['gratuit','en_attente','paye'].forEach((p) => { %><option value="<%= p %>" <%= i.paiement === p ? 'selected' : '' %>><%= p %></option><% }) %></select>
+        <input name="montant_paye" type="number" step="0.01" value="<%= i.montant_paye %>"><button>OK</button>
+      </form>
+    </td></tr>
+  <% }) %>
+</tbody></table></section>
+<%- include('../partials/footer', { admin: true }) %>

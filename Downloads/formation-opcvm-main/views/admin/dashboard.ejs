@@ -1,0 +1,68 @@
+<%- include('../partials/header', { admin: true }) %>
+<div class="admin-head"><div><span class="eyebrow">Administration</span><h1>Dashboard</h1></div><a class="btn" href="/">Voir le site</a></div>
+<section class="admin-stats">
+  <div><strong><%= stats.users %></strong><span>Utilisateurs</span></div>
+  <div><strong><%= stats.formations %></strong><span>Formations</span></div>
+  <div><strong><%= stats.inscriptions %></strong><span>Inscriptions</span></div>
+  <div><strong><%= stats.contacts %></strong><span>Contacts non lus</span></div>
+  <div><strong><%= stats.revenus %></strong><span>TND payés</span></div>
+  <div><strong><%= stats.temoignages %></strong><span>Témoignages à valider</span></div>
+  <div><strong><%= stats.commentaires %></strong><span>Commentaires en attente</span></div>
+  <div><strong><%= stats.intermediaires %></strong><span>Intermédiaires référencés</span></div>
+  <div><strong><%= stats.messages %></strong><span>Messages membres non lus</span></div>
+  <div><strong><%= stats.societes %></strong><span>Sociétés référencées</span></div>
+</section>
+<section class="admin-grid">
+  <article class="admin-panel"><h2>Inscriptions par mois</h2><canvas id="monthlyChart"></canvas></article>
+  <article class="admin-panel"><h2>Utilisateurs récents</h2><table><thead><tr><th>Nom</th><th>Email</th><th>Rôle</th></tr></thead><tbody><% recentUsers.forEach((u) => { %><tr><td><%= u.prenom %> <%= u.nom %></td><td><%= u.email %></td><td><%= u.role %></td></tr><% }) %></tbody></table></article>
+  <article class="admin-panel admin-panel--wide">
+    <h2>Commentaires en modération</h2>
+    <table>
+      <thead><tr><th>Utilisateur</th><th>Type</th><th>Commentaire</th><th>Date</th><th>Actions</th></tr></thead>
+      <tbody>
+        <% if (!pendingComments.length) { %>
+          <tr><td colspan="5">Aucun commentaire en attente.</td></tr>
+        <% } %>
+        <% pendingComments.forEach((comment) => { %>
+          <tr data-comment-id="<%= comment.id %>">
+            <td><strong><%= comment.prenom || 'Membre' %> <%= comment.nom || '' %></strong><br><small><%= comment.email || '' %></small></td>
+            <td><%= comment.type_cible %></td>
+            <td><%= comment.contenu.slice(0, 140) %><%= comment.contenu.length > 140 ? '...' : '' %></td>
+            <td><%= comment.created_at %></td>
+            <td class="actions">
+              <button type="button" data-approve="<%= comment.id %>">Approuver</button>
+              <button class="danger" type="button" data-delete="<%= comment.id %>">Supprimer</button>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </article>
+  <article class="admin-panel admin-panel--wide"><h2>Inscriptions récentes</h2><table><thead><tr><th>Utilisateur</th><th>Formation</th><th>Statut</th><th>Paiement</th></tr></thead><tbody><% recentInscriptions.forEach((i) => { %><tr><td><%= i.prenom %> <%= i.nom %></td><td><%= i.titre %></td><td><%= i.statut %></td><td><%= i.paiement %></td></tr><% }) %></tbody></table></article>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+  const dashboardData = <%- chartData %>;
+  const cssVars = getComputedStyle(document.documentElement);
+  const chartGold = cssVars.getPropertyValue('--gold').trim();
+  const chartWhite = cssVars.getPropertyValue('--white').trim();
+  const chartSlate = cssVars.getPropertyValue('--slate').trim();
+  new Chart(document.getElementById('monthlyChart'), {
+    type: 'bar',
+    data: { labels: dashboardData.labels, datasets: [{ label: 'Inscriptions', data: dashboardData.values, backgroundColor: chartGold }] },
+    options: { plugins: { legend: { labels: { color: chartWhite } } }, scales: { x: { ticks: { color: chartSlate } }, y: { ticks: { color: chartSlate } } } }
+  });
+  document.addEventListener('click', async (event) => {
+    const approveId = event.target.dataset.approve;
+    const deleteId = event.target.dataset.delete;
+    if (!approveId && !deleteId) return;
+    const id = approveId || deleteId;
+    const response = await fetch(approveId ? `/api/commentaires/${id}/approve` : `/api/commentaires/${id}`, {
+      method: approveId ? 'PUT' : 'DELETE'
+    });
+    if (response.ok) {
+      document.querySelector(`[data-comment-id="${id}"]`)?.remove();
+    }
+  });
+</script>
+<%- include('../partials/footer', { admin: true }) %>

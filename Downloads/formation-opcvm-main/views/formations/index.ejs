@@ -1,0 +1,38 @@
+<%- include('../partials/header') %>
+<section class="page-hero compact">
+  <div class="container">
+    <span class="eyebrow">Catalogue</span>
+    <h1>Formations OPCVM</h1>
+    <p>Filtrez par public, format et niveau pour trouver le bon parcours.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <form class="filter-bar" action="/formations" method="get">
+      <select name="categorie">
+        <option value="">Tous profils</option>
+        <option value="investisseur" <%= filters.categorie === 'investisseur' ? 'selected' : '' %>>Investisseur</option>
+        <option value="etudiant" <%= filters.categorie === 'etudiant' ? 'selected' : '' %>>Étudiant</option>
+      </select>
+      <select name="type">
+        <option value="">Tous formats</option>
+        <option value="enligne" <%= filters.type === 'enligne' ? 'selected' : '' %>>En ligne</option>
+        <option value="presentiel" <%= filters.type === 'presentiel' ? 'selected' : '' %>>Présentiel</option>
+      </select>
+      <button class="btn" type="submit">Filtrer</button>
+      <a class="btn btn--ghost" href="/formations">Réinitialiser</a>
+    </form>
+    <div class="card-grid card-grid--3">
+      <% formations.forEach((formation) => { %>
+        <article class="course-card">
+          <span class="tag"><%= formation.categorie %> · <%= formation.type %></span>
+          <h3><a href="/formations/<%= formation.id %>"><%= formation.titre %></a></h3>
+          <p><%= formation.description %></p>
+          <div class="course-card__meta"><span><%= formation.niveau %> · <%= formation.duree %></span><strong><%= formation.prix === 0 ? 'Gratuit' : `${formation.prix} TND` %></strong></div>
+          <a class="link" href="/formations/<%= formation.id %>">Détail</a>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<%- include('../partials/footer') %>

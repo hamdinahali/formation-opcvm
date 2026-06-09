@@ -1,0 +1,19 @@
+  <% const isAdminFooter = typeof admin !== 'undefined' && admin; %>
+    </main>
+  <% if (!isAdminFooter) { %>
+    <footer class="site-footer">
+      <div class="container site-footer__grid">
+        <div>
+          <h3>Formation OPCVM</h3>
+          <p>Plateforme tunisienne de formation aux OPCVM, aux marchés et à l’investissement responsable.</p>
+        </div>
+        <div><h4>Parcours</h4><a href="/formation-investisseurs">Investisseurs</a><a href="/formation-etudiants">Étudiants</a><a href="/formations">Catalogue</a></div>
+        <div><h4>Accès</h4><a href="/auth/login">Connexion</a><a href="/auth/register">Créer un compte</a><a href="/dashboard">Dashboard</a></div>
+        <div><h4>Contact</h4><p>Tunis, Tunisie</p><p>contact@opcvm.tn</p></div>
+      </div>
+      <div class="site-footer__bar">© 2026 Formation OPCVM. Tous droits réservés.</div>
+    </footer>
+  <% } %>
+  <script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<%- include('../partials/header') %>
+<section class="auth-page">
+  <div class="auth-page__brand">
+    <span class="eyebrow">Espace sécurisé</span>
+    <h1>Connexion Formation <em>OPCVM</em></h1>
+    <p>Retrouvez vos inscriptions, votre progression et vos ressources pédagogiques.</p>
+    <div class="ticker"><span>BVMT +0,42% · OPCVM Actions +1,18% · Obligataire -0,12% · Monétaire +0,09% · </span><span>BVMT +0,42% · OPCVM Actions +1,18% · Obligataire -0,12% · Monétaire +0,09% · </span></div>
+  </div>
+  <form class="auth-card" action="/auth/login" method="post">
+    <h2>Connexion</h2>
+    <label>Email<input type="email" name="email" autocomplete="email" required></label>
+    <label>Mot de passe<input type="password" name="password" autocomplete="current-password" required></label>
+    <button class="btn" type="submit">Entrer</button>
+    <p>Pas encore de compte ? <a class="link" href="/auth/register">Créer un compte</a></p>
+  </form>
+</section>
+<%- include('../partials/footer') %>

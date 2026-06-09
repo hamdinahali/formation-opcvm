@@ -1,0 +1,19 @@
+<%- include('../partials/header') %>
+<section class="auth-page">
+  <div class="auth-page__brand">
+    <span class="eyebrow">Inscription</span>
+    <h1>Ouvrez votre espace <em>Formation OPCVM</em></h1>
+    <p>Choisissez un profil étudiant ou investisseur et démarrez votre parcours.</p>
+  </div>
+  <form class="auth-card" action="/auth/register" method="post">
+    <h2>Créer un compte</h2>
+    <label>Nom<input name="nom" autocomplete="family-name" required></label>
+    <label>Prénom<input name="prenom" autocomplete="given-name" required></label>
+    <label>Email<input type="email" name="email" autocomplete="email" required></label>
+    <label>Mot de passe<input type="password" name="password" autocomplete="new-password" required></label>
+    <label>Profil<select name="role"><option value="etudiant">Étudiant</option><option value="investisseur">Investisseur</option></select></label>
+    <button class="btn" type="submit">Créer mon compte</button>
+    <p>Déjà inscrit ? <a class="link" href="/auth/login">Connexion</a></p>
+  </form>
+</section>
+<%- include('../partials/footer') %>
